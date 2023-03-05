@@ -1,0 +1,130 @@
+@media only screen and (max-width: 768px) {
+    /* Styles for mobile devices */
+    body {
+        font-size: 16px;
+    }
+    .container {
+        width: 100%;
+    }
+    }
+.navbar {
+    background-color:#00325b;
+}
+li {
+    position: relative;
+
+    /* height: 68px; */
+    font-family: "Open Sans",sans-serif;
+    height: 45px;
+    font-weight: 600;
+    color: #fff;
+    font-size: 18px;
+    display: block;
+    line-height: 25px;
+    padding: 13px 100px;
+    border-bottom: none;
+  
+}
+a {
+    color: #ffffff;
+    text-decoration: auto;
+}
+.submenu{
+    border-top: 2px solid #218383;
+    border-bottom: 2px solid #218383;
+    display: none;
+    position: absolute;
+    max-width: 100%;
+    width: 100%;
+    left: 0;
+    background: #00325b;
+    position: absolute;
+    z-index: 499;
+    padding: 22px 0;
+}
+
+.has-submenu:hover .submenu {
+        display: block;
+        background-color: #00325b;
+    }
+    .submenu {
+        display: none;
+        position: absolute;
+        top:100%;
+        left: 0;
+        background-color: #00325b;
+        padding: 0;
+        margin: 0;
+        min-width: 100%;
+    }
+    .submenu li {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+    .submenu li a {
+        display: inline-block;
+        /* padding: 10px; */
+        color: #ffffff;
+    }
+    .submenu li a:hover {
+        /* color: #00325b; */
+        text-decoration: underline;
+    }
+
+h2 {
+    color: rgb(255, 255, 255);
+    text-align: center;
+}
+p {
+    line-height: 1.5;
+    margin-bottom: 1.5em;
+    font-weight: 500;
+    margin: 0px 5px 0px 5px;
+}
+.card-body {
+    padding: 0rem 0rem !important;
+    border-radius: 0.25rem;
+    border: 2px solid #00325b;
+  }
+  .card {
+    border: 1px solid #f8f9fa;
+    border-radius: 0.25rem;
+  }
+h3 {
+    height: 50px;
+    /* border-radius: 15px; */
+    padding: 3px;
+}
+.row_body {
+    margin: 0px 50px;
+}
+.list-unstyled a{
+    color: black;
+}
+Footer {
+    background-color:#00325b ;
+    color:white;
+    margin: 0px 0px 0px 0px;
+}
+.col-3 {
+    margin:0px 0px 0px 0px;
+
+}
+.col-3 p {
+    font-weight:300;
+}
+h6 {
+    font-weight:500;
+   
+}
+.footer {
+    background-color: #00325b;
+    color:rgb(255, 255, 255);
+}
+.link {
+    font-size: 10px ;
+}
+h5 {
+    text-align: center;
+}
