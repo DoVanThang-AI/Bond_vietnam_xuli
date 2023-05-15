@@ -65,3 +65,23 @@ def Modified_duration(face_vl,coupon,Yield,Time,per_time):
     Duration = pv_total/per_time
     Modified_Duration = Duration / (1+(Yield/per_time)/100)
     return Modified_Duration
+
+
+
+TP_DN = pd.read_excel(r'D:\DATA\HOC_TAP\DO AN\Web_app\data\TRAIPHIEUDOANHNGHIEP_TECH.xlsx')
+TP_DN = TP_DN.rename(columns={'Thời gian ĐT (tháng)':'TG giữ đến đáo hạn'})
+
+
+TP_DN['Kỳ hạn trái phiếu'] = cal_period_bond(TP_DN,'Ngày đáo hạn','Ngày phát hành')
+TP_DN['Lãi suất'] = TP_DN['Lãi suất'].map(lambda x : x*100)
+TP_DN['Coupon_rate'] = TP_DN.apply(lambda x : Coupon_rate_bond(x['mệnh giá'],x['Lãi suất'],x['tần số trả lãi']),axis=1)
+
+TP_DN['Market_price'] =TP_DN.apply(lambda x : market_prices(x['mệnh giá'],x['Lãi suất'],x['tần số trả lãi'],x['Kỳ hạn trái phiếu']),axis=1)
+TP_DN['YTM'] = TP_DN.apply(lambda x : Yield_to_marturity(x['Market_price'],x['mệnh giá'],x['Kỳ hạn trái phiếu'],x['tần số trả lãi'],x['Coupon_rate']),axis=1)
+TP_DN['Modified_duration']=TP_DN.apply(lambda x :Modified_duration(x['mệnh giá'],x['Lãi suất'],x['YTM'],x['Kỳ hạn trái phiếu'],x['tần số trả lãi']),axis=1 )
+laisuat  = pd.DataFrame(TP_DN.groupby(['Lãi suất','Tổ chức phát hành'])['Lãi suất'].count()).rename(columns={'Lãi suất':'count'}).reset_index()
+
+modified = TP_DN[['Modified_duration','Lãi suất','Tổ chức phát hành']]
+df_modified =modified.groupby(['Tổ chức phát hành'])[['Modified_duration','Lãi suất']].mean().reset_index()
+
+Data_table = TP_DN[['Mã TP','Lãi suất','Ngày phát hành','Ngày đáo hạn','mệnh giá','Market_price','YTM', 'Modified_duration']]
