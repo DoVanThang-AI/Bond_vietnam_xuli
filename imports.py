@@ -12,6 +12,7 @@ import dash_bootstrap_components as dbc
 import plotly.io as pio
 import dash_extensions as de
 import dash_table
+from scipy.optimize import newton
 from pages.Home import home_layout
 from pages.page1 import page_1_layout
 from pages.page2 import page_2_layout

@@ -1,5 +1,4 @@
-import datetime
-import pandas as pd
+from imports import *
 def Coupon_rate_bond(face_vl, annual_rate, per_term_year):
   annual_rate = annual_rate
   coupon = (annual_rate*face_vl)/(per_term_year*face_vl)
@@ -11,8 +10,7 @@ def cal_period_bond(data,col1,col2):
   return data[col1].dt.year - data[col2].dt.year
 
 
-import numpy as np
-from scipy.optimize import newton
+
 def market_prices(face_value, coupon_rate, coupon_freq, maturity):
     coupon_rate = coupon_rate/100
     num_payments = maturity * coupon_freq
