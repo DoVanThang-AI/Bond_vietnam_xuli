@@ -66,7 +66,7 @@ def Modified_duration(face_vl,coupon,Yield,Time,per_time):
 
 
 
-TP_DN = pd.read_excel(r'D:\DATA\HOC_TAP\DO AN\Web_app\data\TRAIPHIEUDOANHNGHIEP_TECH.xlsx')
+TP_DN = pd.read_excel('./data/TRAIPHIEUDOANHNGHIEP_TECH.xlsx')
 TP_DN = TP_DN.rename(columns={'Thời gian ĐT (tháng)':'TG giữ đến đáo hạn'})
 
 
