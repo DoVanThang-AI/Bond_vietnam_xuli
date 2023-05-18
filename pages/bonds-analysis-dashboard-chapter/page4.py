@@ -13,9 +13,11 @@ import dash_ag_grid
 import plotly.io as pio
 import dash_extensions as de
 import sys
-# from Calculator_index import ytm_layout
-from Utils.funtions_cal import Yield_to_marturity,laisuat,df_modified,Data_table
-from Utils.Cal_index_ import ytm_layout,duration_bond, yield_to_call
+
+
+sys.path.append('/Users/hoangvietsocool/Code/Bond_vietnam_xuli/utils')    
+from funtions_cal import Yield_to_marturity,laisuat,df_modified,Data_table
+from Cal_index_ import ytm_layout,duration_bond, yield_to_call
 
 
 dash.register_page(__name__, path='/bonds-analysis/dashboard-analysis', name='Dashboard Analysis')

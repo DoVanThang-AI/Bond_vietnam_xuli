@@ -1,6 +1,6 @@
 from imports import *
 
-dash.register_page(__name__, path='/bond-news/tin-tuc-trai-phieu-viet-nam')
+dash.register_page(__name__, path='/bond-news/tin-tuc-trai-phieu-viet-nam', name='Tin tức trái phiếu Việt Nam')
 ''' Page 7 in here tin tuc'''
 
 layout = html.Div([

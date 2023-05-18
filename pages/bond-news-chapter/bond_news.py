@@ -2,12 +2,11 @@
 from imports import *
 
 
-dash.register_page(__name__, path='/bond-news', name='Tin tức trái phiếu')
+dash.register_page(__name__, path='/bond-news', name='Trung tâm truyền thông')
 
 
 ## Trung tâm truyền thông
 layout = html.Div([
-   
     dbc.Row([
         html.H1("Trung tâm truyền thông",style={'text-align':'center','color':'#797D7F'}),
         html.Div([

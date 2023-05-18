@@ -1,7 +1,7 @@
 from imports import *
 
 
-dash.register_page(__name__, path='/gioi-thieu-ve-trai-phieu/phan-bo-tai-san')
+dash.register_page(__name__, path='/gioi-thieu-ve-trai-phieu/phan-bo-tai-san', name='Phân bổ tài sản')
 
 
 layout = html.Div([
@@ -29,50 +29,6 @@ layout = html.Div([
         html.P(" 3.Nếu bạn đang tiếp tục thêm vào các khoản đầu tư của mình, bạn có thể thay đổi các khoản đóng góp của mình để nhiều hơn nữa được chuyển vào các danh mục tài sản thiếu trọng lượng cho đến khi danh mục đầu tư của bạn cân bằng trở lại."),html.Br(),
 
     ],style={'margin':'0px 400px 0px 400px'}),
-    html.Br(),
-            dbc.Row(
-            [
-                dbc.Col([
-                    html.H6('About',style={'color':'white'}),
-                    html.P("This is a website that provides information on Vietnamese bonds and is calculated with many statistics so that investors can give investment advice to reduce financial risks.",style={'color':'white'})
-
-                    
-                ],className="col-3"),
-                #dich vu
-                dbc.Col([
-                    html.H6("Device",style={'color':'white'}),
-                    html.A('Investor information', href='https://www.hnx.vn/vi-vn/thong-tin-nha-dau-tu-gt.html',target="_blank",style={'font-size':'10px','text-align':'center'}),
-                    html.Hr(style={'margin': '5px 0px 0px 0px'}),
-                    html.A('Media Center', href="https://www.hnx.vn/trung-tam-truyen-thong-bc.html", target="_blank",style={'font-size':'10px','text-align':'center'}),
-                    html.Hr(style={'margin': '5px 0px 0px 0px'}),
-                    html.A('Procedure Guide',href='https://www.hnx.vn/huong-dan-thu-tuc.html', target="_blank",style={'font-size':'10px','text-align':'center'}),
-                    html.Hr(style={'margin': '5px 0px 0px 0px'}),
-                    html.A('Information service', href="https://www.hnx.vn/dich-vu-cctt.html", target="_blank",style={'font-size':'10px','text-align':'center'})
-
-                ],className="col-3"),
-                #tintuc
-                dbc.Col([
-                    html.H6("News"),
-                    html.A('Event activities', href='https://www.hnx.vn/tin-tuc-su-kien-hnx.html',target="_blank",style={'font-size':'10px','text-align':'center'}),
-                    html.Hr(style={'margin': '5px 0px 0px 0px'}),
-                    html.A('Social activities', href='https://www.hnx.vn/tin-tuc-su-kien-hdxh.html',target="_blank",style={'font-size':'10px','text-align':'center'}),
-                    html.Hr(style={'margin': '5px 0px 0px 0px'}),
-
-
-                ],className="col-3"),
-                #   Ketnoi
-                dbc.Col([
-                    html.H6("Connect"),
-                    html.A('Gmail',  href="mailto:contact@example.com",target="_blank",style={'font-size':'10px','text-align':'center'}),
-                    html.Hr(style={'margin': '5px 0px 0px 0px'}),
-                    html.A('Twitter', href="https://twitter.com/",target="_blank",style={'font-size':'10px','text-align':'center'}),
-                    html.Hr(style={'margin': '5px 0px 0px 0px'}),
-
-                    html.P('Address',style={'font-size':'10px','font-weight':'500'}),
-                    html.P(' 12 Nguyễn Văn Bảo, Phường 4, Gò Vấp, Thành phố Hồ Chí Minh',style={'font-size':'10px','font-weight':'500','color':'red'}),
-                    html.Hr(style={'margin': '5px 0px 0px 0px'}),
-                    html.P("telephone: (+84) 769803053",style={'font-size':'10px','font-weight':'500','color':'red'})
-                ],className="col-3")
-            ],className="footer")
+            
     ],fluid=True)
 ],style={'background-color':'#F4F6F6'})

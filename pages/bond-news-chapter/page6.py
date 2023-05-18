@@ -2,7 +2,7 @@
 
 from imports import *
 
-dash.register_page(__name__, path='/bond-news/bao-cao-thi-truong-trai-phieu')
+dash.register_page(__name__, path='/bond-news/bao-cao-thi-truong-trai-phieu', name='Báo cáo thị trường trái phiếu')
 
 layout = html.Div([
     dbc.Container([
