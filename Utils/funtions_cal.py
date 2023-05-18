@@ -1,4 +1,5 @@
 from imports import *
+
 def Coupon_rate_bond(face_vl, annual_rate, per_term_year):
   annual_rate = annual_rate
   coupon = (annual_rate*face_vl)/(per_term_year*face_vl)
@@ -66,7 +67,7 @@ def Modified_duration(face_vl,coupon,Yield,Time,per_time):
 
 
 
-TP_DN = pd.read_excel(r'D:\DATA\HOC_TAP\DO AN\Web_app\data\TRAIPHIEUDOANHNGHIEP_TECH.xlsx')
+TP_DN = pd.read_excel(f'/Users/hoangvietsocool/Code/Bond_vietnam_xuli/data/TRAIPHIEUDOANHNGHIEP_TECH.xlsx')
 TP_DN = TP_DN.rename(columns={'Thời gian ĐT (tháng)':'TG giữ đến đáo hạn'})
 
 

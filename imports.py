@@ -11,7 +11,7 @@ import dash_ag_grid as dag
 import dash_bootstrap_components as dbc
 import plotly.io as pio
 import dash_extensions as de
-import dash_table
+from dash import dash_table
 from scipy.optimize import newton
 from pages.Home import home_layout
 from pages.page1 import page_1_layout
@@ -23,4 +23,25 @@ from pages.page6 import page_6_layout
 from pages.pages_7 import page_7_layout
 from pages.page8 import page_8_layout
 # from pages.Calculator_index import ytm_layout
+from dash.dash_table.Format import Group
 
+
+import pandas as pd
+import numpy as np
+import plotly.express as px
+import datetime as dt
+import dash
+from dash import dcc
+from dash import html, callback
+from dash.dependencies import Input, Output,State
+import scipy as sp
+import dash_ag_grid as dag
+import dash_bootstrap_components as dbc
+import dash_ag_grid
+import plotly.io as pio
+import dash_extensions as de
+import sys
+# from Calculator_index import ytm_layout
+# sys.path.append('D:\DATA\HOC_TAP\DO AN\Web_app')    
+from Utils.funtions_cal import Yield_to_marturity,laisuat,df_modified,Data_table
+from Utils.Cal_index_ import ytm_layout,duration_bond, yield_to_call

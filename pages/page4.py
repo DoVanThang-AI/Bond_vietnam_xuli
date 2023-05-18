@@ -14,7 +14,6 @@ import plotly.io as pio
 import dash_extensions as de
 import sys
 # from Calculator_index import ytm_layout
-sys.path.append('D:\DATA\HOC_TAP\DO AN\Web_app')    
 from Utils.funtions_cal import Yield_to_marturity,laisuat,df_modified,Data_table
 from Utils.Cal_index_ import ytm_layout,duration_bond, yield_to_call
 
@@ -116,7 +115,7 @@ prices_bonds = html.Div([
 
 '''Việt code ========================================================================================================================='''
 #Start
-df = pd.read_csv('D:\DATA\HOC_TAP\DO AN\Web_app\data\VietnamGovernanceBonds.csv')
+df = pd.read_csv('/Users/hoangvietsocool/Code/Bond_vietnam_xuli/data/VietnamGovernanceBonds.csv')
 
 pio.templates.default = "plotly_white"
 
@@ -299,7 +298,6 @@ default_html = html.Div([
                     # id='ag-grid',
                     columnDefs=[{'headerName': col, 'field': col} for col in Data_table.columns],
                     rowData=Data_table.to_dict('records'),
-                    suppressCellSelection=True,
                     # enableFilter=True
                 )
             ])
