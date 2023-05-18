@@ -14,7 +14,6 @@ import plotly.io as pio
 import dash_extensions as de
 import sys
 # from Calculator_index import ytm_layout
-sys.path.append('D:\DATA\HOC_TAP\DO AN\Web_app')    
 from Utils.funtions_cal import Yield_to_marturity,laisuat,df_modified,Data_table
 from Utils.Cal_index_ import ytm_layout,duration_bond, yield_to_call
 
