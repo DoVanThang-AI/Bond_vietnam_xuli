@@ -45,4 +45,4 @@ layout = html.Div([
             html.I("Thị trường UPCoM tháng 10/2022 chứng kiến mức giảm đáng kể cả về khối lượng và giá trị giao dịch. Khối lượng giao dịch (KLGD) bình quân đạt xấp xỉ 32,99 triệu cổ phiếu/phiên, giá trị giao dịch (GTGD) bình quân đạt hơn 476 tỷ đồng/phiên, giảm lần lượt 23,21% về khối lượng giao dịch và 34,07% về giá trị giao dịch so với tháng trước.",style={'font-weight':'300'})
         ],style={'margin-bottom':'1.25rem'}),
     ],style={'margin':'0px 400px 0px 400px'})
-],style={'background-color':'#F4F6F6'})
+])

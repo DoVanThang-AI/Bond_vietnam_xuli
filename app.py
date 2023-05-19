@@ -8,9 +8,12 @@ IUH_LOGO='https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Logo_IUH.png
 nav_contents = []
 for i, page in enumerate(dash.page_registry.values()):
     print(i, page['name'], page["relative_path"])
-    nav_contents.append(dbc.NavItem(dbc.NavLink(page['name'], href=page["relative_path"], active=True)))
+    nav_contents.append(dbc.NavItem(dbc.NavLink(page['name'], href=page["relative_path"], active=True, style={'color':'#212A3E'})))
 
 pages = list(dash.page_registry.values())
+
+
+   
 
 # navbar 
 navBar = dbc.Navbar(
@@ -19,8 +22,8 @@ navBar = dbc.Navbar(
               
             html.A(
                 dbc.Row([
-                        dbc.Col(html.Img(src=IUH_LOGO, height="30px")),
-                        dbc.Col(dbc.NavbarBrand("VN-IUH Bonds", className="ms-2", style={'font-weight':'1200', 'text-align':'center','font-size':'20px'})),
+                        dbc.Col(html.Img(src=IUH_LOGO, height="80px")),
+                        dbc.Col(dbc.NavbarBrand("VN-IUH Bonds", className=" ms-2", style={'font-weight':'1700', 'text-align':'center','font-size':'20px', 'color':'#212A3E'}), className="ml-2"),
                     ],
 
                     align="center",
@@ -38,14 +41,18 @@ navBar = dbc.Navbar(
                             
                             [
                                 dbc.NavItem(nav_contents[0]),
-                                dbc.DropdownMenu(
+                                dbc.NavItem(dbc.DropdownMenu(
                                     [
                                         dbc.DropdownMenuItem(pages[1]['name'], href=pages[1]['relative_path']),
                                         dbc.DropdownMenuItem(pages[2]['name'], href=pages[2]['relative_path']),
                                         dbc.DropdownMenuItem(pages[3]['name'], href=pages[3]['relative_path']),
                                     ],
-                                    label="Giới thiệu"
-                                ),
+                                    label="Giới thiệu",
+                                    nav=True,
+                                    toggle_style={"color": "#212A3E",
+                                                  'font-weight':'1200',},
+                                ), ),
+                                
                                 dbc.DropdownMenu(
                                     [
                                         dbc.DropdownMenuItem(pages[4]['name'], href=pages[4]['relative_path']),
@@ -53,7 +60,8 @@ navBar = dbc.Navbar(
                                         dbc.DropdownMenuItem(pages[6]['name'], href=pages[6]['relative_path']),
                                     ],
                                     nav=True,
-                                    label="Tin tức"
+                                    label="Tin tức",
+                                    toggle_style={"color": "#212A3E", "font-weight": "1200"}
                                 ),
                                 dbc.DropdownMenu(
                                     [
@@ -62,13 +70,14 @@ navBar = dbc.Navbar(
                                     ],
                                     nav=True,
                                     label="Dashboard",
+                                    toggle_style={"color": "#212A3E", "font-weight": "1200"},
 
                                     # add an auto margin after page 2 to
                                     # push later links to end of nav
                                     className="me-auto"
                                 ),
-                                dbc.NavItem(dbc.NavLink("Help")),
-                                dbc.NavItem(dbc.NavLink("About")),
+                                dbc.NavItem(dbc.NavLink("Help", style={'color':'#212A3E', 'font-weight':'1200'})),
+                                dbc.NavItem(dbc.NavLink("About", style={'color':'#212A3E', 'font-weight':'1200'})),
                                 
                             ],
                             # make sure nav takes up the full width for auto
@@ -89,7 +98,9 @@ navBar = dbc.Navbar(
 
     ),
     dark=True,
-    color="#212A3E",
+    color="#F1F6F9",
+    className="pt-3 pb-3",
+    
     
 )
 
@@ -142,8 +153,9 @@ app.layout = dbc.Container(
             # header container
             dbc.Container(navBar, fluid=True, className='p-0 m-0'), 
 
+
             # page container
-            dbc.Container(dash.page_container, fluid=True, className='p-0 m-0 background-gradient-viet'),
+            dbc.Container(dash.page_container, fluid=True, className='p-0 m-0'),
 
 
             # footer container
@@ -155,4 +167,16 @@ app.layout = dbc.Container(
     
 if __name__ == '__main__':
     app.run_server(debug=False)
-	
+
+app.clientside_callback(
+    """
+    function(clicks, elemid) {
+        document.getElementById(elemid).scrollIntoView({
+          behavior: 'smooth'
+        });
+    }
+    """,
+    Output('garbage-output-0', 'children'),
+    [Input('about-us-btn', 'n_clicks')],
+    [State('about-us', 'id')]
+)

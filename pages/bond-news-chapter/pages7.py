@@ -50,4 +50,4 @@ layout = html.Div([
         ]),
 
     ],style={'margin':'0px 400px 0px 400px'})
-],style={'background-color':'#F4F6F6'})
+])

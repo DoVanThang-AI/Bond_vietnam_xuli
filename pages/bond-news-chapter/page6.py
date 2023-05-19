@@ -61,4 +61,4 @@ layout = html.Div([
     ],style={'margin':'0px 400px 0px 400px'})
 
     ],fluid=True)
-],style={'background-color':'#F4F6F6'})
+])

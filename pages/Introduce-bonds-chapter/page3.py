@@ -25,6 +25,6 @@ layout = html.Div([
         html.Img(src="https://ibond.com.vn/wp-content/uploads/2022/05/Dinh-gia-trai-phieu-co-ky-han-va-khong-huong-loi-tuc-dinh-ky-Zero-coupon.jpg",style={'width':'100%','height':'400px'}),html.Br(),
         html.P("Zero – coupon là loại trái phiếu không được trả lợi tức định kỳ. Và người tham gia sẽ được mua nó với giá thấp hơn nhiều so với mệnh giá. Với loại trái phiếu này, lãi suất trái phiếu sẽ bằng 0 nên tất cả các khoản lợi tức I cũng sẽ bằng 0."),
     
-    ],style={'margin':'0px 400px 0px 400px'}),
+    ]),
     
-],style={'background-color':'#F4F6F6'})
+],)
