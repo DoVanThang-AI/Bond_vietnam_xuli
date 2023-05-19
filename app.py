@@ -3,7 +3,6 @@ from imports import *
 app = dash.Dash(__name__, use_pages=True, external_stylesheets=[dbc.themes.BOOTSTRAP], suppress_callback_exceptions=True, assets_url_path='assets', )
 
 # nav contents
-IUH_LOGO='https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Logo_IUH.png/800px-Logo_IUH.png'
 
 nav_contents = []
 for i, page in enumerate(dash.page_registry.values()):
@@ -22,8 +21,7 @@ navBar = dbc.Navbar(
               
             html.A(
                 dbc.Row([
-                        dbc.Col(html.Img(src=IUH_LOGO, height="80px")),
-                        dbc.Col(dbc.NavbarBrand("VN-IUH Bonds", className=" ms-2", style={'font-weight':'1700', 'text-align':'center','font-size':'20px', 'color':'#212A3E'}), className="ml-2"),
+                        dbc.Col(dbc.NavbarBrand("VN-IUH Bonds", className=" ms-2", style={'font-weight':'900', 'text-align':'center','font-size':'2rem', 'color':'#212A3E'}), className="ml-2"),
                     ],
 
                     align="center",
@@ -159,7 +157,7 @@ app.layout = dbc.Container(
 
 
             # footer container
-            html.Footer(dbc.Container(footer, fluid=True, className='p-0 m-0'))
+            dbc.Container(footer, fluid=True, className='p-0 m-0', style={'background-color':'black'})
 
         ], fluid=True, className='p-0 m-0'
 )
