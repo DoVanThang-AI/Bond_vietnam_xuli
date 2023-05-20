@@ -187,3 +187,152 @@ yield_to_call = html.Div([
         html.H3("Công thức của tính năng suất gọi đầu vào của trái phiếu"),
     ])
 ])
+
+# 
+evalue_bonds = html.Div([
+                    html.H1("Đánh giá trái phiếu"),
+                html.Div([
+                        html.Label("Giá trái phiếu:"),
+                        dcc.Input(id="bond-price-eva", type="number", step=0.01,value=96850),
+                    ]),    
+                html.Div(
+                    [
+                        html.Label("Mệnh giá:"),
+                        dcc.Input(id="par-value-eva", type="number", value=100000),
+                    ],
+                    style={"marginBottom": "10px"},
+                ),
+                html.Div(
+                    [
+                        html.Label("Lãi suất hàng năm(%):"),
+                        dcc.Input(id="interest-rate-eva", type="number", value=7.83),
+                    ],
+                    style={"marginBottom": "10px"},
+                ),
+                html.Div([
+                    html.Label('YTM (%):'),
+                    dcc.Input(id='YTM-eva',type="number", value = 10.81)
+                ],style={"marginBottom": "10px"}),
+                html.Div(
+                    [
+                        html.Label("thời gian đáo hạn(years):"),
+                        dcc.Input(id="maturity-time-eva", type="number", value=5),
+                    ],
+                    style={"marginBottom": "10px"},
+                ),
+                html.Div(
+                    [
+                        html.Label("Tần suất đáo hạn:"),
+                        dcc.Dropdown(
+                            id="maturity-frequency-eva",
+                            options=[
+                                {"label": "Annual", "value": 1},
+                                {"label": "Semi-Annual", "value": 2},
+                                {"label": "Quarterly", "value": 4},
+                            ],
+                            value=1,
+                        ),
+                    ],
+                    style={"marginBottom": "10px"},
+                ),
+                html.Button("Calculate", id="calculate-button-eva", n_clicks=0),
+                html.Div(id="result-eva"),
+                ])
+BEY_bonds =  html.Div([
+                html.Div([
+                    html.H1("Lợi tức tương đương trái phiếu"),
+                html.Div([
+                        html.Label("Giá trái phiếu:"),
+                        dcc.Input(id="bond-price-bey", type="number", step=0.01,value=980),
+                    ]),    
+                html.Div(
+                    [
+                        html.Label("Mệnh giá:"),
+                        dcc.Input(id="par-value-bey", type="number", value=1000),
+                    ],
+                    style={"marginBottom": "10px"},
+                ),
+                html.Div(
+                    [
+                        html.Label("Số ngày đáo hạn"),
+                        dcc.Input(id="interest-rate-bey", type="number", step=1, value=300  ),
+                    ],
+                    style={"marginBottom": "10px"},
+                ),
+                
+                html.Button("Calculate", id="calculate-button-bey", n_clicks=0),
+                html.Div(id="result-bey"),
+                ]),
+                html.Br(),
+                html.Div([
+                    html.H3('Lợi tức tương đương trái phiếu (BEY) là gì?'),
+                    html.P('Công thức lợi tức tương đương trái phiếu, còn được gọi là công thức BEY , là một trong nhiều cách để phân tích lợi tức đầu tư trái phiếu. Cụ thể hơn, BEY so sánh khoản thanh toán gốc với giá trái phiếu . Do đó, nó cho bạn biết bạn có thể nhận được bao nhiêu tiền lãi khi nhận tiền gốc sau khi mua trái phiếu.'),
+                    html.P("Cách tính lợi tức tương đương trái phiếu đơn giãn như sau:"),
+                    html.P("Ví dụ : có 1 trái phiếu có giá là $980 với mệnh giá của trái phiếu là $1000 , số ngày đến đáo hạn là 300 ngày"),
+                    html.P(children =[html.B("1. Xác định giá trái phiếu"),'ở đây giá của trái phiếu là $920']),
+                    html.P(children =[html.B("2. Xác định mệnh giá"),'ở đây giá của trái phiếu là $1000']),
+                    html.P(children=[html.B("3. Xác định lợi tức trái phiếu (BEY)")]),
+                    dcc.Markdown('$\dfrac{mệnh giá - giá trái phiếu}{giá * (365 / thời gian )}$', mathjax=True,style={'text-align':'center','font-size':'x-large'}),
+
+                    html.P('Sử dụng công thức ta có: '),
+                    dcc.Markdown('$\dfrac{$1,000 - $980}{$980} * \dfrac{365}{300} = 2.48\%$', mathjax=True,style={'text-align':'center','font-size':'x-medium'})
+                    
+                ])
+
+])                
+
+coupon_rate_bonds = html.Div([
+                html.Div([
+                    html.H1("tỷ lệ phiếu giảm giá"),  
+                html.Div(
+                    [
+                        html.Label("Mệnh giá VND:"),
+                        dcc.Input(id="par-value-coupon", type="number", value=100000),
+                    ],
+                    style={"marginBottom": "10px"},
+                ),
+                html.Div(
+                    [
+                        html.Label("phiếu giảm giá mỗi kỳ (VND)"),
+                        dcc.Input(id="interest-rate-coupon", type="number", step=1, value=25000 ),
+                    ],
+                    style={"marginBottom": "10px"},
+                ),
+                html.Div(
+                    [
+                        html.Label("Tần suất đáo hạn:"),
+                        dcc.Dropdown(
+                            id="maturity-frequency-coupon",
+                            options=[
+                                {"label": "Annual", "value": 1},
+                                {"label": "Semi-Annual", "value": 2},
+                                {"label": "Quarterly", "value": 4},
+                            ],
+                            value=1,
+                        ),
+                    ],
+                    style={"marginBottom": "10px"},
+                ),
+                
+                html.Button("Calculate", id="calculate-button-coupon", n_clicks=0),
+                html.Div(id="result-coupon"),
+                ]),
+                html.Br(),
+                html.Div([
+                    html.H3('Lãi suất coupon là gì?'),
+                    html.P('Lãi suất coupon cho bạn biết số tiền thanh toán coupon tương đối so với mệnh giá , là số tiền bạn cho vay để mua trái phiếu.'),
+                    html.P("Cách tính lãi suất coupon trái phiếu đơn giãn như sau:"),
+                    html.P("Ví dụ : có 1 trái phiếu có mệnh giá là 100,000VND với phiếu giảm giá mỗi kỳ là 25,000 VND với tần suất trả lãi là 2 lần 1 năm "),
+                    html.P(children =[html.B("1. Xác định mệnh giá trái phiếu"),'ở đây giá của trái phiếu là 100,000 VND']),
+                    html.P(children =[html.B("2. Tính khoản thanh toán coupon hàng năm")]),
+                    html.P('thanh toán coupon hàng năm = phiếu giảm giá mỗi kỳ * tần suất trả lãi'),
+                    html.P(children=[html.B("Vì đây là trái phiếu nữa năm trả 1 lần nên khoản thanh toán coupon hàng năm của trái phiếu là 25000*2 = 50,000 VND")]),
+                    html.P(children=[html.B("3.Tính lãi suất coupon ")]),
+                    dcc.Markdown('$coupon_rate = \dfrac{thanh toán coupon hàng năm }{mệnh giá)}$', mathjax=True,style={'text-align':'center','font-size':'x-medium'}),
+
+                    html.P('Sử dụng công thức ta có: '),
+                    dcc.Markdown('$\dfrac{50,000}{100,000} = 5\%$', mathjax=True,style={'text-align':'center','font-size':'x-medium'})
+                    
+                ])
+
+])                
