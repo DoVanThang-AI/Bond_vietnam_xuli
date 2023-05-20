@@ -7,7 +7,7 @@ app = dash.Dash(__name__, use_pages=True, external_stylesheets=[dbc.themes.BOOTS
 nav_contents = []
 for i, page in enumerate(dash.page_registry.values()):
     print(i, page['name'], page["relative_path"])
-    nav_contents.append(dbc.NavItem(dbc.NavLink(page['name'], href=page["relative_path"], active=True, style={'color':'#212A3E'})))
+    nav_contents.append(dbc.NavItem(dbc.NavLink(page['name'], href=page["relative_path"], active=True, style={'color':'#212A3E', 'font-weight':'600'})))
 
 pages = list(dash.page_registry.values())
 
@@ -39,6 +39,7 @@ navBar = dbc.Navbar(
                             
                             [
                                 dbc.NavItem(nav_contents[0]),
+                                dbc.NavItem(nav_contents[4]),
                                 dbc.NavItem(dbc.DropdownMenu(
                                     [
                                         dbc.DropdownMenuItem(pages[1]['name'], href=pages[1]['relative_path']),
@@ -51,16 +52,6 @@ navBar = dbc.Navbar(
                                                   'font-weight':'1200',},
                                 ), ),
                                 
-                                dbc.DropdownMenu(
-                                    [
-                                        dbc.DropdownMenuItem(pages[4]['name'], href=pages[4]['relative_path']),
-                                        dbc.DropdownMenuItem(pages[5]['name'], href=pages[5]['relative_path']),
-                                        dbc.DropdownMenuItem(pages[6]['name'], href=pages[6]['relative_path']),
-                                    ],
-                                    nav=True,
-                                    label="Tin tức",
-                                    toggle_style={"color": "#212A3E", "font-weight": "1200"}
-                                ),
                                 dbc.DropdownMenu(
                                     [
                                         dbc.DropdownMenuItem(pages[7]['name'], href=pages[7]['relative_path']),

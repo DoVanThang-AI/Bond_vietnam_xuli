@@ -15,45 +15,50 @@ news_data = {
     'type': ["World News"],
 }
 
+news = pd.read_csv("./data/newsData.csv")
+
 card_1 = []
 card_2 = []
 card_3 = []
 
-for i in range(10):
+for news_data in news.itertuples():
     i = 0
-    card_2.append(
-        dbc.Row([
-            dbc.Card([
-                dbc.CardBody([
-                    html.A(news_data['title'][i], href=news_data['link'], className="card-title mt-2", style={'font-size': '2rem', 'font-weight': '800', 'text-decoration': 'none', 'color': 'black'}),
-                    html.P(news_data['date'][i], className="card-text mt-2", style={'font-size': '0.75rem', 'font-weight': '200', 'text-decoration': 'none', 'color': 'black'}),
-                    html.P(news_data['description'][i], className="card-text mt-2", style={'font-size': '1rem', 'font-weight': '300', 'text-decoration': 'none', 'color': 'black'}),
-                ], style={'border': 'none', 'text-align': 'left'}, className="m-2"),
-                dbc.CardImg(src=news_data['image'][i], top=False),
 
-            ], className="mb-3 p-3", style={'border-bottom': '1px solid rgba(206,206,206, 0.5)'})
-        ])
-    )
-    card_1.append(
-        dbc.Row([
-            dbc.Card([
-                dbc.CardBody([
-                    html.H1(news_data['title'][i], className="card-title mt-2", style={'font-size': '1.5rem', 'font-weight': '800', 'text-decoration': 'none', 'color': 'black'}),
-                    html.P(news_data['description'][i], className="card-text"),
-                    dbc.CardLink(
-                                            "Xem thêm",
-                                            href=news_data['link'][i],
-                                            style={
-                                                "color": "#007bff",
-                                                "text-align": "left",
-                                            },
-                                            className="mt-3 p-3",
-                                        ),
-                ], style={'border': 'none', 'tech-align': 'left'}),
+    if news_data.type == "news":
+        card_2.append(
+            dbc.Row([
+                dbc.Card([
+                    dbc.CardBody([
+                        html.A(news_data.title, href=news_data.link, className="card-title mt-2", style={'font-size': '2rem', 'font-weight': '800', 'text-decoration': 'none', 'color': 'black'}),
+                        html.P(news_data.date, className="card-text mt-2", style={'font-size': '0.75rem', 'font-weight': '200', 'text-decoration': 'none', 'color': 'black'}),
+                        html.P(news_data.description, className="card-text mt-2", style={'font-size': '1rem', 'font-weight': '300', 'text-decoration': 'none', 'color': 'black'}),
+                    ], style={'border': 'none', 'text-align': 'left'}, className="m-2"),
+                    dbc.CardImg(src=news_data.image, top=False),
 
-            ], className="mb-3 p-3", style={'border-bottom': '1px solid rgba(206,206,206, 0.5)'})
-        ])
-    )
+                ], className="mb-3 p-3", style={'border-bottom': '1px solid rgba(206,206,206, 0.5)'})
+            ])
+        )
+    elif news_data.type == "report":
+        card_1.append(
+            dbc.Row([
+                dbc.Card([
+                    dbc.CardBody([
+                        html.H1(news_data.title, className="card-title mt-2", style={'font-size': '1.5rem', 'font-weight': '800', 'text-decoration': 'none', 'color': 'black'}),
+                        html.P(news_data.description, className="card-text"),
+                        dbc.CardLink(
+                                                "Xem thêm",
+                                                href=news_data.link,
+                                                style={
+                                                    "color": "#007bff",
+                                                    "text-align": "left",
+                                                },
+                                                className="mt-3 p-3",
+                                            ),
+                    ], style={'border': 'none', 'tech-align': 'left'}),
+
+                ], className="mb-3 p-3", style={'border-bottom': '1px solid rgba(206,206,206, 0.5)'})
+            ])
+        )
     
 
 

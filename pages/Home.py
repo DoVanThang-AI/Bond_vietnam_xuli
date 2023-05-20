@@ -52,7 +52,7 @@ layout = [
                             ),
                         ]
                     ),
-                    html.Img(src="/assets/6.svg", className="img-fluid"),
+                    html.Img(src="/assets/Group171.svg", className="img-fluid"),
                 ],
                 className="d-flex flex-column justify-content-center align-items-center",
             )
@@ -143,7 +143,7 @@ layout = [
                                         dbc.CardBody(
                                             [
                                                 html.H4(
-                                                    "Dashboard trái phiếu",
+                                                    "Định giá trái phiếu",
                                                     className="card-title",
                                                     style={
                                                         "font-size": "2rem",

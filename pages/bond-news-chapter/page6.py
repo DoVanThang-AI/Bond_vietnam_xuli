@@ -4,12 +4,7 @@ from imports import *
 
 dash.register_page(__name__, path='/bond-news/bao-cao-thi-truong-trai-phieu', name='Báo cáo thị trường trái phiếu')
 
-layout = html.Div([
-    dbc.Container([
-    
-    #báo cáo thị trường trái phiếu tịa đây
-
-    dbc.Row([
+layout = dbc.Row([
         html.H1("Báo cáo thị trường trái phiếu Việt Nam",style={'color':'#797D7F'}),html.Br(),
         html.Div([
             html.Img(src="https://media.istockphoto.com/id/1430187728/vi/vec-to/17-th%C3%A1ng-2-bi%E1%BB%83u-t%C6%B0%E1%BB%A3ng-l%E1%BB%8Bch-h%C3%A0ng-ng%C3%A0y-n%E1%BB%81n-tr%E1%BA%AFng.jpg?s=612x612&w=0&k=20&c=1eWRY2CuwYdP6ys1ZZjXbZ1QuNGWb16cwHAKT_zEmhI=",style={'float':'left','margin': '0px 15px 15px 0px','height':'150px','width':'150px'}),html.Br(),
@@ -58,7 +53,4 @@ layout = html.Div([
             html.A("Báo cáo Thị trường Trái phiếu tháng 5 – 2021",href="https://www.vndirect.com.vn/bao-cao-thi-truong-trai-phieu-thang-5-2021/",target="_blank",style={'color':'red','font-weight':'600','font-size':'18px'}),html.Br(),
             html.I("Tổng giá trị Trái phiếu doanh nghiệp (TPDN) phát hành trong tháng 4/2021 đạt mức 42.109 tỷ đồng (+71,4% svck), tăng 101,9% so với tháng trước. Giá trị TPDN phát hành lũy kế từ đầu năm đạt 81.681 tỷ đồng,…",style={'font-weight':'300'})
         ])
-    ],style={'margin':'0px 400px 0px 400px'})
-
-    ],fluid=True)
-])
+],style={'margin':'0px 400px 0px 400px'})
