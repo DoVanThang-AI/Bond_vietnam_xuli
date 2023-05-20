@@ -16,7 +16,7 @@ layout = [
                         className="align-self-center",
                         style={
                             "font-size": "3rem",
-                            "font-weight": "900",
+                            "font-weight": "700",
                             "color": "#212A3E",
                         },
                     ),
@@ -25,7 +25,7 @@ layout = [
                         className="align-self-center",
                         style={
                             "font-size": "3rem",
-                            "font-weight": "900",
+                            "font-weight": "700",
                             "color": "#212A3E",
                         },
                     ),
@@ -220,7 +220,6 @@ layout = [
                     ),
                 ],
                 className="p-5",
-                style={"height": "100vh"},
             ),
         ]
     ),
@@ -329,7 +328,6 @@ layout = [
                     ),
                 ],
                 className="p-5",
-                style={"height": "100vh"},
             ),
     ], style={"background-color": "#394867"}),
 ]

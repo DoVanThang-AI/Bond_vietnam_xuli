@@ -157,15 +157,3 @@ app.layout = dbc.Container(
 if __name__ == '__main__':
     app.run_server(debug=False)
 
-app.clientside_callback(
-    """
-    function(clicks, elemid) {
-        document.getElementById(elemid).scrollIntoView({
-          behavior: 'smooth'
-        });
-    }
-    """,
-    Output('garbage-output-0', 'children'),
-    [Input('about-us-btn', 'n_clicks')],
-    [State('about-us', 'id')]
-)
