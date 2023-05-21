@@ -1,4 +1,4 @@
-#!/Users/hoangvietsocool/Code/Bond_vietnam_xuli/venv/bin/python3
+#!/root/Bond_vietnam_xuli/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

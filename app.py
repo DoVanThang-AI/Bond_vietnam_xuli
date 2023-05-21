@@ -155,5 +155,5 @@ app.layout = dbc.Container(
 
     
 if __name__ == '__main__':
-    app.run_server(debug=False)
+    app.run_server(debug=False,host='173.249.55.123',port ='3000')
 

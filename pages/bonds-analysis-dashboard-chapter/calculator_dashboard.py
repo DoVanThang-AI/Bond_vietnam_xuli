@@ -2,7 +2,7 @@ from imports import *
 
 
 from utils.funtions_cal import Yield_to_marturity,laisuat,df_modified,Data_table
-from utils.Cal_index_ import ytm_layout,duration_bond, yield_to_call
+from utils.Cal_index_ import ytm_layout,duration_bond, yield_to_call,evalue_bonds,BEY_bonds,coupon_rate_bonds
 
 
 dash.register_page(__name__, path='/bonds-analysis/calculator', name='Bonds Calculator')
@@ -119,7 +119,10 @@ layout = dbc.Row([
                             }),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center'}),
                             html.Li(html.A("Lợi suất trái phiếu", id="element2", n_clicks=0),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center'}),
                             html.Li(html.A("Thời hạn trái phiếu", id = "element3", n_clicks=0),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center'}),
-                            html.Li(html.A("Lợi tức trái phiếu để gọi", id = "element4", n_clicks=0),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center'})
+                            html.Li(html.A("Lợi tức trái phiếu để gọi", id = "element4", n_clicks=0),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center'}),
+                             html.Li(html.A("Đánh giá trái phiếu", id = "element5", n_clicks=0,style={'font-size':'15px'}),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center','text-font':'15px'}),
+                            html.Li(html.A("Lợi tức tương đương", id = "element6", n_clicks=0,style={'font-size':'15px'}),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center','text-font':'15px'}),
+                            html.Li(html.A("Calculate Coupon rate", id = "element7", n_clicks=0,style={'font-size':'15px'}),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center','text-font':'15px'}),
                         ]
                         
                     ),
@@ -134,9 +137,9 @@ layout = dbc.Row([
 
 @callback(
     Output("content-area", "children"),
-    [Input("element1", "n_clicks"), Input("element2", "n_clicks"),Input("element3", "n_clicks"),Input("element4", "n_clicks")],
+    [Input("element1", "n_clicks"), Input("element2", "n_clicks"),Input("element3", "n_clicks"),Input("element4", "n_clicks"),Input("element5", "n_clicks"),Input("element6", "n_clicks"),Input("element7", "n_clicks")],
 )
-def display_content(element1_clicks, element2_clicks,element3_clicks,element4_clicks):
+def display_content(element1_clicks, element2_clicks,element3_clicks,element4_clicks,element5_clicks,element6_clicks,element7_clicks):
     ctx = dash.callback_context
 
     if not ctx.triggered:
@@ -153,6 +156,12 @@ def display_content(element1_clicks, element2_clicks,element3_clicks,element4_cl
         return duration_bond
     elif triggered_id == "element4":
         return yield_to_call
+    elif triggered_id =="element5":
+        return evalue_bonds
+    elif triggered_id =="element6":
+        return BEY_bonds
+    elif triggered_id =="element7":
+        return coupon_rate_bonds
     else:
         return html.Div()
     
@@ -432,3 +441,102 @@ def update_bond_table(currency):
         ])
         rows.append(row)
     return rows
+
+
+@callback(
+   
+    Output("result-eva", "children"),
+ 
+    [Input("calculate-button-eva", "n_clicks")],
+    [
+        State('bond-price-eva','value'),
+        State("par-value-eva", "value"),
+        State("interest-rate-eva", "value"),
+        State('YTM-eva','value'),
+        State("maturity-time-eva", "value"),
+        State("maturity-frequency-eva", "value"),
+    ],
+)
+def calculate_present_value(n_clicks,bond_price,face_vl,coupon,Yield,Time,per_time):
+    if n_clicks >1:
+
+        Data = pd.DataFrame()
+        coupon_payment = [(coupon/per_time)/100*face_vl]*(Time*per_time-1)+[(coupon/per_time)/100*face_vl+face_vl]
+        total_payment = Time*per_time
+        Data['period']=pd.DataFrame(np.arange(1,total_payment+1),columns = ['Periods'])
+        Data['Coupon_payment']= pd.DataFrame(coupon_payment)
+        Data['D_CP']=Data['Coupon_payment'] / ((1+(Yield/per_time)/100) ** Data['period'])
+        Data['PV/Total_DCP']= Data['D_CP']*Data['period'] / Data['D_CP'].sum()
+        present_value = round(Data['D_CP'].sum(),2)
+         # Đánh giá trái phiếu dựa trên giá trị hiện tại
+        if bond_price < present_value:
+            return html.Div([
+            dbc.Card([
+
+         
+            html.P(children=[f"Một trái phiếu có giá hiện tại là: {bond_price} VND, mệnh giá là : {face_vl} VND,lãi suất là: {coupon}, với YTM là: {Yield} với số năm đáo hạn là : {Time}, tần suất trả lãi mỗi năm : {per_time} lần "]),
+            html.P(f"Trái phiếu định giá thấp hơn giá trị hiện tại là : {present_value} VND")
+               ],style={'background-color': 'antiquewhite','border-radius':'20px'})
+        ])
+        elif bond_price > present_value:
+            return html.Div([
+            dbc.Card([
+
+         
+            html.P(children=[f"Một trái phiếu có giá hiện tại là: {bond_price} VND, mệnh giá là : {face_vl } VND,lãi suất là: {coupon}, với YTM là: {Yield} với số năm đáo hạn là : {Time}, tần suất trả lãi mỗi năm : {per_time} lần "]),
+            html.P(f"Trái phiếu định giá cao hơn giá trị hiện tại là : {present_value} VND")
+               ],style={'background-color': 'antiquewhite','border-radius':'20px'})
+        ])
+        else:
+            return html.Div([
+            dbc.Card([
+
+         
+            html.P(children=[f"Một trái phiếu có giá hiện tại là: {bond_price} VND, mệnh giá là : {face_vl} VND,lãi suất là: {coupon}, với YTM là: {Yield} với số năm đáo hạn là : {Time}, tần suất trả lãi mỗi năm : {per_time} lần "]),
+            html.P(f"Trái phiếu định giá gần bằng giá trị hiện tại là : {present_value} VND")
+               ],style={'background-color': 'antiquewhite','border-radius':'20px'})
+        ])
+
+
+
+# call back BEY bonds
+@callback (
+    Output("result-bey",'children'),
+    [Input("calculate-button-bey",'n_clicks')],
+    [
+        State('bond-price-bey','value'),
+        State('par-value-bey','value'),
+        State('interest-rate-bey','value')
+    ]
+)
+def update_calculator(n_clicks, bond_price, face_vl,time):
+    if n_clicks > 1:
+        BEY = (face_vl - bond_price) / bond_price * (365 / time)
+        return html.Div([
+            dbc.Card([
+                html.P(f'Trái phiếu có giá là : {bond_price} với mệnh giá là :{face_vl} số ngày đến hạn là : {time} có lợi suất trái phiếu tương đương BEY là : {BEY:.2%}')
+            ],style={'background-color': 'antiquewhite','border-radius':'20px'})
+        ])
+    
+# coupon rate bonds
+# callback coupon rate
+@callback (
+    Output("result-coupon",'children'),
+    [Input("calculate-button-coupon",'n_clicks')],
+    [
+        State('par-value-coupon','value'),
+        State('interest-rate-coupon','value'),
+        State('maturity-frequency-coupon','value')
+    ]
+)
+def update_calculator(n_clicks, face_vl,coupon_payment,frenquency):
+    if n_clicks > 1:
+        coupon_payments = coupon_payment*frenquency
+        coupon_rate = coupon_payments / face_vl * 10
+        return html.Div([
+            dbc.Card([
+                html.P(f"ta có 1 trái phiếu với mệnh giá là :{face_vl} VND với phiếu giảm giá mỗi kỳ là : {coupon_payment} VND với tần suất trả lãi: {frenquency} "),
+                html.P(f'Phiếu giảm giá hàng năm là: {coupon_payments} VND'),
+                html.P(f'lãi suất coupon là : {coupon_rate}%')
+            ],style={'background-color': 'antiquewhite','border-radius':'20px'})
+        ])
