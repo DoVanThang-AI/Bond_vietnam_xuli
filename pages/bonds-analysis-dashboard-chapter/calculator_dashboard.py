@@ -1,26 +1,13 @@
-import pandas as pd
-import numpy as np
-import plotly.express as px
-import datetime as dt
-import dash
-from dash import dcc
-from dash import html, callback
-from dash.dependencies import Input, Output,State
-import scipy as sp
-import dash_ag_grid as dag
-import dash_bootstrap_components as dbc
-import dash_ag_grid
-import plotly.io as pio
-import dash_extensions as de
-import sys
+from imports import *
 
 
 from utils.funtions_cal import Yield_to_marturity,laisuat,df_modified,Data_table
 from utils.Cal_index_ import ytm_layout,duration_bond, yield_to_call,evalue_bonds,BEY_bonds,coupon_rate_bonds
 
 
-dash.register_page(__name__, path='/bonds-analysis/dashboard-analysis', name='Analysis')
+dash.register_page(__name__, path='/bonds-analysis/calculator', name='Bonds Calculator')
 
+df = pd.read_csv('./data/VietnamGovernanceBonds.csv')
 
 
 prices_bonds = html.Div([
@@ -112,27 +99,31 @@ prices_bonds = html.Div([
 ])
 
 
-
-'''Việt code ========================================================================================================================='''
-#Start
-df = pd.read_csv('./data/VietnamGovernanceBonds.csv')
-
-pio.templates.default = "plotly_white"
-
-# table 
-grid = dag.AgGrid(
-    id="bond-table-grid",
-    rowData=df.to_dict("records"),
-    columnDefs=[{"field": i} for i in df.columns],
-    defaultColDef={"resizable": True, "sortable": True, "filter": True, "minWidth":125},
-    columnSize="sizeToFit",
-)
-
-
-
 #End
 ''' Page 4 have '''
-layout = html.Div([
+layout = dbc.Row([
+            dbc.Col([
+
+                    html.H1("Calculator", className="mt-4 mb-4 ", style={'text-align':'center', 'font-size':'2rem', 'font-weight':'700'}),
+
+
+
+
+                    html.Ul(
+                        [
+                            html.Li(html.A("Giá trị hiện tại", id="element1", n_clicks=0, style={
+                                'content':'',
+                                'with':'100%',
+                                'height':'100%',
+                                
+                            }),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center'}),
+                            html.Li(html.A("Lợi suất trái phiếu", id="element2", n_clicks=0),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center'}),
+                            html.Li(html.A("Thời hạn trái phiếu", id = "element3", n_clicks=0),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center'}),
+                            html.Li(html.A("Lợi tức trái phiếu để gọi", id = "element4", n_clicks=0),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center'})
+                        ]
+                        
+                    ),
+            ],className='col-3 p-4 ml-2',style={'background-color':'whitesmoke','border-radius':'25px'}),
     
     dbc.Row([
         dbc.Col([
@@ -318,7 +309,7 @@ def display_content(element1_clicks, element2_clicks,element3_clicks,element4_cl
     ctx = dash.callback_context
 
     if not ctx.triggered:
-        return default_html
+        return prices_bonds
 
     triggered_id = ctx.triggered[0]["prop_id"].split(".")[0]
 
