@@ -2,8 +2,9 @@ from imports import *
 
 
 from utils.funtions_cal import Yield_to_marturity,laisuat,df_modified,Data_table
-from utils.Cal_index_ import ytm_layout,duration_bond, yield_to_call,evalue_bonds,BEY_bonds,coupon_rate_bonds
-
+from utils.Cal_index_ import ytm_layout,duration_bond, yield_to_call,evalue_bonds,BEY_bonds,coupon_rate_bonds,coupon_payments_bonds,risk_adjusted_bonds,zero_coupon_bonds
+import dash_ag_grid
+import dash_ag_grid as grid
 
 dash.register_page(__name__, path='/bonds-analysis/calculator', name='Bonds Calculator')
 
@@ -15,7 +16,7 @@ prices_bonds = html.Div([
     html.Div(
             [
                 html.Div([
-                    html.H1("Giá trái phiếu"),
+                    html.H1("Face value"),
                 html.Div(
                     [
                         html.Label("Mệnh giá:"),
@@ -25,7 +26,7 @@ prices_bonds = html.Div([
                 ),
                 html.Div(
                     [
-                        html.Label("Lãi suất hàng năm(%):"),
+                        html.Label("Annual coupon rate:"),
                         dcc.Input(id="interest-rate", type="number", value=7.83),
                     ],
                     style={"marginBottom": "10px"},
@@ -36,14 +37,14 @@ prices_bonds = html.Div([
                 ],style={"marginBottom": "10px"}),
                 html.Div(
                     [
-                        html.Label("thời gian đáo hạn(years):"),
+                        html.Label("Year to maturity(years):"),
                         dcc.Input(id="maturity-time", type="number", value=5),
                     ],
                     style={"marginBottom": "10px"},
                 ),
                 html.Div(
                     [
-                        html.Label("Tần suất đáo hạn:"),
+                        html.Label("Coupon frequency:"),
                         dcc.Dropdown(
                             id="maturity-frequency",
                             options=[
@@ -111,41 +112,42 @@ layout = dbc.Row([
 
                     html.Ul(
                         [
-                            html.Li(html.A("Giá trị hiện tại", id="element1", n_clicks=0, style={
-                                'content':'',
-                                'with':'100%',
-                                'height':'100%',
-                                
-                            }),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center'}),
-                            html.Li(html.A("Lợi suất trái phiếu", id="element2", n_clicks=0),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center'}),
-                            html.Li(html.A("Thời hạn trái phiếu", id = "element3", n_clicks=0),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center'}),
-                            html.Li(html.A("Lợi tức trái phiếu để gọi", id = "element4", n_clicks=0),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center'})
+                            html.Li(html.A("Bond Price", id="element1", n_clicks=0,style={'font-size':'15px'}),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center'}),
+                            html.Li(html.A("Yield", id="element2", n_clicks=0,style={'font-size':'15px'}),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center'}),
+                            html.Li(html.A("Term Bonds", id = "element3", n_clicks=0,style={'font-size':'15px'}),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center'}),
+                            html.Li(html.A("Yield to Call", id = "element4", n_clicks=0,style={'font-size':'15px'}),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center'}),
+                            html.Li(html.A("Evaluate Bonds", id = "element5", n_clicks=0,style={'font-size':'15px'}),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center'}),
+                            html.Li(html.A("Bond Equivalent Yield", id = "element6", n_clicks=0,style={'font-size':'15px'}),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center'}),
+                            html.Li(html.A("Calculate Coupon rate", id = "element7", n_clicks=0,style={'font-size':'15px'}),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center'}),
+                            html.Li(html.A("Payment coupon", id = "element8", n_clicks=0,style={'font-size':'15px'}),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center'}),
+                            html.Li(html.A("risk-adjusted return", id = "element9", n_clicks=0,style={'font-size':'15px'}),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center'}),
+                            html.Li(html.A("Zero Coupon Bond Value Calculator", id = "element10", n_clicks=0,style={'font-size':'15px'}),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center','height':'80px'}),
                         ]
                         
                     ),
             ],className='col-3 p-4 ml-2',style={'background-color':'whitesmoke','border-radius':'25px'}),
     
-    dbc.Row([
-        dbc.Col([
-            html.Div(
-            [
-                html.H2("Công cụ tính toán",style={'color':'black'}),
-                html.Ul(
-                    [
-                        html.Li(html.A("Bond price ", id="element1", n_clicks=0,style={'font-size':'15px'}),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center','text-font':'15px'}),
-                        html.Li(html.A("YTM", id="element2", n_clicks=0,style={'font-size':'15px'}),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center','text-font':'15px'}),
-                        html.Li(html.A("Thời hạn trái phiếu", id = "element3", n_clicks=0,style={'font-size':'15px'}),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center','text-font':'15px'}),
-                        html.Li(html.A("Lợi tức trái phiếu để gọi", id = "element4", n_clicks=0,style={'font-size':'15px'}),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center','text-font':'15px'}),
-                        html.Li(html.A("Đánh giá trái phiếu", id = "element5", n_clicks=0,style={'font-size':'15px'}),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center','text-font':'15px'}),
-                        html.Li(html.A("Lợi tức tương đương", id = "element6", n_clicks=0,style={'font-size':'15px'}),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center','text-font':'15px'}),
-                        html.Li(html.A("Calculate Coupon rate", id = "element7", n_clicks=0,style={'font-size':'15px'}),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center','text-font':'15px'}),
-                    ]
+    # dbc.Row([
+    #     dbc.Col([
+    #         html.Div(
+    #         [
+    #             html.H2("Công cụ tính toán",style={'color':'black'}),
+    #             html.Ul(
+    #                 [
+    #                     html.Li(html.A("Bond price ", id="element1", n_clicks=0,style={'font-size':'15px'}),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center','text-font':'15px'}),
+    #                     html.Li(html.A("YTM", id="element2", n_clicks=0,style={'font-size':'15px'}),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center','text-font':'15px'}),
+    #                     html.Li(html.A("Thời hạn trái phiếu", id = "element3", n_clicks=0,style={'font-size':'15px'}),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center','text-font':'15px'}),
+    #                     html.Li(html.A("Lợi tức trái phiếu để gọi", id = "element4", n_clicks=0,style={'font-size':'15px'}),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center','text-font':'15px'}),
+    #                     html.Li(html.A("Đánh giá trái phiếu", id = "element5", n_clicks=0,style={'font-size':'15px'}),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center','text-font':'15px'}),
+    #                     html.Li(html.A("Lợi tức tương đương", id = "element6", n_clicks=0,style={'font-size':'15px'}),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center','text-font':'15px'}),
+    #                     html.Li(html.A("Calculate Coupon rate", id = "element7", n_clicks=0,style={'font-size':'15px'}),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center','text-font':'15px'}),
+    #                 ]
                     
-                ),
-            ],
+    #             ),
+    #         ],
         
-        ),
-        ],className="col-3",style={'background-color':'whitesmoke','border-radius':'25px'}),
+    #     ),
+    #     ],className="col-3",style={'background-color':'whitesmoke','border-radius':'25px'}),
    
         dbc.Col([
            
@@ -155,7 +157,7 @@ layout = dbc.Row([
         ],className="col-8"),#,style={'background-color':'whitesmoke','border-radius':'25px','margin':'0px 20px'}
    
     ],style={'margin':'0px 10px 0px 200px'}),
-])
+
 
 default_html = html.Div([
     dbc.Container([
@@ -303,9 +305,9 @@ default_html = html.Div([
 
 @callback(
     Output("content-area", "children"),
-    [Input("element1", "n_clicks"), Input("element2", "n_clicks"),Input("element3", "n_clicks"),Input("element4", "n_clicks"),Input("element5", "n_clicks"),Input("element6", "n_clicks"),Input("element7", "n_clicks")],
+    [Input("element1", "n_clicks"), Input("element2", "n_clicks"),Input("element3", "n_clicks"),Input("element4", "n_clicks"),Input("element5", "n_clicks"),Input("element6", "n_clicks"),Input("element7", "n_clicks"),Input("element8", "n_clicks"),Input("element9", "n_clicks"),Input("element10", "n_clicks")],
 )
-def display_content(element1_clicks, element2_clicks,element3_clicks,element4_clicks,element5_clicks,element6_clicks,element7_clicks):
+def display_content(element1_clicks, element2_clicks,element3_clicks,element4_clicks,element5_clicks,element6_clicks,element7_clicks,element8_clicks,element9_clicks,element10_clicks):
     ctx = dash.callback_context
 
     if not ctx.triggered:
@@ -328,6 +330,12 @@ def display_content(element1_clicks, element2_clicks,element3_clicks,element4_cl
         return BEY_bonds
     elif triggered_id =="element7":
         return coupon_rate_bonds
+    elif triggered_id =="element8":
+        return coupon_payments_bonds
+    elif triggered_id =="element9":
+        return risk_adjusted_bonds
+    elif triggered_id =="element10":
+        return zero_coupon_bonds
     else:
         return html.Div()
     
@@ -356,8 +364,8 @@ def calculate_present_value(n_clicks,face_vl,coupon,Yield,Time,per_time):
         Data['D_CP']=Data['Coupon_payment'] / ((1+(Yield/per_time)/100) ** Data['period'])
         Data['PV/Total_DCP']= Data['D_CP']*Data['period'] / Data['D_CP'].sum()
         fig = px.bar(Data["period"], y = Data['D_CP'], template="plotly_white")
-        fig.update_layout(title='Amount of Money over Interest Payment Periods',
-                      xaxis_title='Number of Interest Payment Periods',
+        fig.update_layout(title=f'Present value of payment {per_time} of year',
+                      xaxis_title='Present values of payments',
                       yaxis_title='Amount of Money')
         fig.update_traces(
                       hovertemplate='kỳ lãi: %{x}<br>Giá trị: %{y}<extra></extra>')
@@ -707,3 +715,122 @@ def update_calculator(n_clicks, face_vl,coupon_payment,frenquency):
                 html.P(f'lãi suất coupon là : {coupon_rate}%')
             ],style={'background-color': 'antiquewhite','border-radius':'20px'})
         ])
+    
+# coupon payemnt
+@callback(
+    Output("result-output-eight", "children"),
+    [Input("calculate-button-eight", "n_clicks")],
+    [
+     dash.dependencies.State("face-value-eight", "value"),
+     dash.dependencies.State("annual-interest-rate-eight", "value"),
+     dash.dependencies.State("interest-frequency-dropdown-eight", "value")]
+)
+def calculate_yield(n_clicks, face_value, annual_coupon_rate, interest_frequency):
+    if n_clicks is not None:
+        annual_coupon_rate_t = annual_coupon_rate/100
+        coupon_payment = (face_value*annual_coupon_rate_t)/interest_frequency
+        result = html.Div([
+            dbc.Card([
+                html.P(f'Bond have face value is : {face_value}'),
+                html.P(f'Bond have annual coupon rate is: {annual_coupon_rate}%'),
+                html.P(f'Bond have payment frequency of year: {interest_frequency}'),
+                html.P(f'Coupon payment is: {round(coupon_payment,2)} VNĐ')
+
+            ],style={'background-color': 'antiquewhite','border-radius':'20px'})
+        ])
+        return result
+    
+#callback element9 risk-adjustes return 
+
+@callback(
+    Output("result-risk", "children"),
+    [Input("calculate-button-risk", "n_clicks")],
+    [
+     dash.dependencies.State("pofolio-return", "value"),
+     dash.dependencies.State("risk-free", "value"),
+     dash.dependencies.State("standard", "value"),
+     #B
+     dash.dependencies.State("pofolio-return-b", "value"),
+     dash.dependencies.State("risk-free-b", "value"),
+     dash.dependencies.State("standard-b", "value"),
+    ]
+)
+def calculate_yield(n_clicks,pofolio_A, risk_A,stand_A,profolio_B, risk_B,stand_B):
+    if n_clicks is not None:
+        Ctya = (pofolio_A - risk_A)/stand_A
+        Ctyb = (profolio_B- risk_B)/stand_B
+        if (pofolio_A > profolio_B) &(Ctya < Ctyb):
+            result = html.Div([
+                dbc.Card([
+                    html.P('Tỷ lệ Sharpe'),
+                    html.P(f'Quỹ tương hỗ (mutual fund) A: {Ctya} ',style={'color':'red'}),
+                    html.P(f'Quỹ tương hỗ (mutual fund) B: {Ctyb} ',style={'color':'red'}),
+                    html.P('Mặc dù Quỹ tương hỗ  (mutual fund)  A có lợi nhuận cao hơn, những Quỹ tương hỗ  (mutual fund)  B có lợi nhuận được điều chỉnh theo rủi ro cao hơn, nghĩa là kiếm được nhiều hơn trên mỗi đơn vị tổng rủi ro so với Quỹ tương hỗ  (mutual fund)  A')
+
+                ],style={'background-color': 'antiquewhite','border-radius':'20px'})
+            ])
+            return result
+        elif (pofolio_A < profolio_B) &(Ctya > Ctyb):
+            result = html.Div([
+                dbc.Card([
+                    html.P('Tỷ lệ Sharpe'),
+                    html.P(f'Quỹ tương hỗ (mutual fund) A: {Ctya} ',style={'color':'red'}),
+                    html.P(f'Quỹ tương hỗ (mutual fund) B: {Ctyb} ',style={'color':'red'}),
+                    html.P('Mặc dù Quỹ tương hỗ  (mutual fund)  B có lợi nhuận cao hơn, những Quỹ tương hỗ  (mutual fund)  A có lợi nhuận được điều chỉnh theo rủi ro cao hơn, nghĩa là kiếm được nhiều hơn trên mỗi đơn vị tổng rủi ro so với Quỹ tương hỗ  (mutual fund)  B')
+
+                ],style={'background-color': 'antiquewhite','border-radius':'20px'})
+            ])
+
+            return result
+        elif (pofolio_A > profolio_B) &(Ctya > Ctyb):
+            result = html.Div([
+                dbc.Card([
+                    html.P('Tỷ lệ Sharpe'),
+                    html.P(f'Quỹ tương hỗ (mutual fund) A: {Ctya} ',style={'color':'red'}),
+                    html.P(f'Quỹ tương hỗ (mutual fund) B: {Ctyb} ',style={'color':'red'}),
+                    html.P(['Quỹ tương hỗ  (mutual fund)  A có ', html.B("lợi nhuận cao hơn") , " và quỹ tương hỗ (mutual fund ) A lớn hơn B , nghĩa là A có ",html.B("lợi nhuận điều chỉnh theo rủi ro cao hơn")  ," nghĩa là kiếm được nhiều tiên hơn trên mỗi đơn vị tổng rủi ro với quỹ tương hỗ (mutual fund) B"])
+
+                ],style={'background-color': 'antiquewhite','border-radius':'20px'})
+            ])
+        
+            return result
+        else:
+            result = html.Div([
+                dbc.Card([
+                    html.P('Tỷ lệ Sharpe'),
+                    html.P(f'Quỹ tương hỗ (mutual fund) A: {Ctya} ',style={'color':'red'}),
+                    html.P(f'Quỹ tương hỗ (mutual fund) B: {Ctyb} ',style={'color':'red'}),
+                    html.P('Quỹ tương hỗ  (mutual fund)  B có  lợi nhuận cao hơn, và quỹ tương hỗ (mutual fund ) B lớn hơn A , nghĩa là B có lợi nhuận điều chỉnh theo rủi ro cao hơn , nghĩa là kiếm được nhiều tiên hơn trên mỗi đơn vị tổng rủi ro với quỹ tương hỗ (mutual fund) A')
+
+                ],style={'background-color': 'antiquewhite','border-radius':'20px'})
+            ])
+        
+            return result 
+            
+
+#zero coupon
+
+@callback(
+    Output("result-zero", "children"),
+    [Input("calculate-button-zero", "n_clicks")],
+    [
+     dash.dependencies.State("face-vl-zero", "value"),
+     dash.dependencies.State("present-vl-zero", "value"),
+     dash.dependencies.State("time-zero", "value"),
+    ]
+)
+def calculate_yield(n_clicks,face_vl,present_vl,time):
+    if n_clicks is not None:
+        ketqua = pow((face_vl/present_vl),(1/time)) - 1
+        result = html.Div([
+            dbc.Card([
+                html.P('Zero Coupon Bond Effective Yield: '),
+                html.P(f'Trái phiếu có mệnh giá: {face_vl} ',style={'color':'red'}),
+                html.P(f'Trái phiếu có giá trị hiện tại là: {present_vl} ',style={'color':'red'}),
+                html.P(f'Trái phiếu có thời gian đáo hạn là : {time}'),
+                html.P(f"Trái phiếu phiếu giảm giá bằng không Lợi tức hiệu quả: {ketqua:.2%}")
+
+            ],style={'background-color':'#c3c3c36e','color':'red'})
+        ])
+    
+        return result 

@@ -1,40 +1,113 @@
-import numpy as np
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+from dash.dependencies import Input, Output
+import random
 
-def evaluate_bond(bond_price, face_value, coupon_rate, ytm, years_to_maturity, coupon_frequency):
-    # Tính toán số lần trả coupon trong toàn bộ thời gian đáo hạn
-    total_coupon_payments = years_to_maturity * coupon_frequency
-    
-    # Tính toán lượng tiền trả coupon trong một kỳ
-    coupon_payment = (coupon_rate * face_value) / coupon_frequency
-    
-    # Tính toán danh sách các lợi tức (coupon) theo từng kỳ
-    coupon_payments = np.full(total_coupon_payments, coupon_payment)
-    
-    # Tính toán lượng tiền trả về (face value) tại thời điểm đáo hạn
-    final_payment = face_value
-    
-    # Tính toán danh sách các giá trị hiện tại của lợi tức và giá trị trả về
-    present_values = coupon_payments / ((1 + ytm / coupon_frequency) ** np.arange(1, total_coupon_payments + 1))  
-    present_values[-1] += final_payment / ((1 + ytm / coupon_frequency) ** total_coupon_payments)
-    
-    # Tính toán tổng giá trị hiện tại của trái phiếu
-    present_value = np.sum(present_values)
-    
-    # Đánh giá trái phiếu dựa trên giá trị hiện tại
-    if bond_price < present_value:
-        return f"Trái phiếu định giá thấp hơn giá trị hiện tại:{present_value}"
-    elif bond_price > present_value:
-        return f"Trái phiếu định giá cao hơn giá trị hiện tại :{present_value}"
-    else:
-        return "Trái phiếu định giá gần bằng giá trị hiện tại"
+def generate_random_list(start, end, length):
+    random_list = [random.uniform(start, end) for _ in range(length)]
+    return random_list
+start = 0.02
+end = 0.04
+length = 21
 
-# Ví dụ sử dụng hàm evaluate_bond
-bond_price = 91903
-face_value = 100000
-coupon_rate = 0.073
-ytm = 0.1021
-years_to_maturity = 3
-coupon_frequency = 2
+random_values = generate_random_list(start, end, length)
+inflation_data = {
+    2000: 0.03,
+    2001: 0.02,
+    2002: 0.035,
+    2003:random_values[0],
+    2004:random_values[1],
+    2005:random_values[2],
+    2006:random_values[3],
+    2007:random_values[4],
+    2008:random_values[5],
+    2009:random_values[6],
+    2010:random_values[7],
+    2011:random_values[8],
+    2012:random_values[9],
+    2013:random_values[10],
+    2014:random_values[11],
+    2015:random_values[12],
+    2016:random_values[13],
+    2017:random_values[14],
+    2018:random_values[15],
+    2019:random_values[16],
+    2020:random_values[17],
+    2021:random_values[18],
+    2022:random_values[19],
+    2023:random_values[20],
 
-evaluation = evaluate_bond(bond_price, face_value, coupon_rate, ytm, years_to_maturity, coupon_frequency)
-print(evaluation)
+
+
+    # Add more years and corresponding inflation rates here
+}
+
+app = dash.Dash(__name__)
+
+app.layout = html.Div(
+    children=[
+        html.H1("Inflation Calculator"),
+        html.Div(
+            children=[
+                html.Label("Initial Sum:"),
+                dcc.Input(id="initial-sum", type="number", value=1000),
+            ],
+            style={"margin-bottom": "10px"},
+        ),
+        html.Div(
+            children=[
+                html.Label("Initial Year:"),
+                dcc.Input(id="initial-year", type="number", value=2010),
+            ],
+            style={"margin-bottom": "10px"},
+        ),
+        html.Div(
+            children=[
+                html.Label("Final Year:"),
+                dcc.Input(id="final-year", type="number", value=2022),
+            ],
+            style={"margin-bottom": "10px"},
+        ),
+        dcc.Graph(id="inflation-chart"),
+    ],
+    style={"padding": "20px"},
+)
+
+
+@app.callback(
+    Output("inflation-chart", "figure"),
+    [
+    Input("initial-sum", "value"),
+    Input("initial-year", "value"),
+    Input("final-year", "value")]
+)
+def update_chart(initial_sum, initial_year, final_year):
+    years = range(initial_year, final_year + 1)
+    adjusted_values = [initial_sum]
+
+    for year in years[1:]:
+        inflation_rate = inflation_data.get(year, 0)
+        adjusted_value = adjusted_values[-1] * (1 + inflation_rate)
+        adjusted_values.append(adjusted_value)
+
+    return {
+        "data": [
+            {
+                "x": list(years),
+                "y": adjusted_values,
+                "type": "line",
+                "marker": {"color": "blue"},
+            }
+        ],
+        "layout": {
+            "title": "Inflation Calculator",
+            "xaxis": {"title": "Year"},
+            "yaxis": {"title": "Adjusted Value"},
+        },
+    }
+
+
+if __name__ == "__main__":
+    app.run_server(debug=True)
+

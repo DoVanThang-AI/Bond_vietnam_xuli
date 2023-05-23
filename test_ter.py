@@ -1,67 +1,58 @@
-import dash
-import dash_core_components as dcc
-import dash_html_components as html
-from dash.dependencies import Input, Output
+import random
+def calculate_inflation(initial_sum, initial_year, final_year, inflation_data):
+    years = range(initial_year, final_year + 1)
+    adjusted_values = [initial_sum]
 
-app = dash.Dash(__name__)
+    for year in years[1:]:
+        inflation_rate = inflation_data.get(year, 0)
+        adjusted_value = adjusted_values[-1] * (1 + inflation_rate)
+        adjusted_values.append(adjusted_value)
 
-app.layout = html.Div([
-    html.H1("Tính Yield to Call và Current Yield"),
-    html.Div([
-        html.Label("Giá trái phiếu (VNĐ):"),
-        dcc.Input(id="bond-price-input", type="number", value=1000),
-    ], style={"margin-bottom": "10px"}),
-    html.Div([
-        html.Label("Mệnh giá trái phiếu (VNĐ):"),
-        dcc.Input(id="face-value-input", type="number", value=1000),
-    ], style={"margin-bottom": "10px"}),
-    html.Div([
-        html.Label("Giá gọi (VNĐ):"),
-        dcc.Input(id="call-price-input", type="number", value=1050),
-    ], style={"margin-bottom": "10px"}),
-    html.Div([
-        html.Label("Số năm đến khi gọi:"),
-        dcc.Input(id="years-to-call-input", type="number", value=5),
-    ], style={"margin-bottom": "10px"}),
-    html.Div([
-        html.Label("Tỷ lệ lãi suất hàng năm (%):"),
-        dcc.Input(id="annual-interest-rate-input", type="number", value=5),
-    ], style={"margin-bottom": "10px"}),
-    html.Div([
-        html.Label("Tần suất trả lãi:"),
-        dcc.Dropdown(
-            id="interest-frequency-dropdown",
-            options=[
-                {"label": "Năm", "value": 1},
-                {"label": "Nửa năm", "value": 2},
-                {"label": "Tháng", "value": 12},
-            ],
-            value=1,
-        ),
-    ], style={"margin-bottom": "10px"}),
-    html.Button("Tính toán", id="calculate-button"),
-    html.Div(id="result-output", style={"margin-top": "10px"}),
-])
+    return adjusted_values
+def generate_random_list(start, end, length):
+    random_list = [random.uniform(start, end) for _ in range(length)]
+    return random_list
+start = 0.02
+end = 0.04
+length = 21
 
-@app.callback(
-    Output("result-output", "children"),
-    [Input("calculate-button", "n_clicks")],
-    [dash.dependencies.State("bond-price-input", "value"),
-     dash.dependencies.State("face-value-input", "value"),
-     dash.dependencies.State("call-price-input", "value"),
-     dash.dependencies.State("years-to-call-input", "value"),
-     dash.dependencies.State("annual-interest-rate-input", "value"),
-     dash.dependencies.State("interest-frequency-dropdown", "value")]
-)
-def calculate_yield(n_clicks, bond_price, face_value, call_price, years_to_call, annual_coupon_rate, interest_frequency):
-    if n_clicks is not None:
-        yield_to_call = (annual_coupon_rate*10+((call_price-bond_price)/years_to_call))/((call_price+bond_price)/interest_frequency)
-        current_yield = (face_value*(annual_coupon_rate/100)/bond_price)
-        result = html.Div([
-            html.P(f"Current Yield: {current_yield:.2%}"),
-            html.P(f"Yield to Call: {yield_to_call:.2%}")
-        ])
-        return result
-if __name__ == '__main__':
-    app.run_server(debug=True)
-	
+random_values = generate_random_list(start, end, length)
+inflation_data = {
+    2000: 0.03,
+    2001: 0.02,
+    2002: 0.035,
+    2003:random_values[0],
+    2004:random_values[1],
+    2005:random_values[2],
+    2006:random_values[3],
+    2007:random_values[4],
+    2008:random_values[5],
+    2009:random_values[6],
+    2010:random_values[7],
+    2011:random_values[8],
+    2012:random_values[9],
+    2013:random_values[10],
+    2014:random_values[11],
+    2015:random_values[12],
+    2016:random_values[13],
+    2017:random_values[14],
+    2018:random_values[15],
+    2019:random_values[16],
+    2020:random_values[17],
+    2021:random_values[18],
+    2022:random_values[19],
+    2023:random_values[20],
+
+
+
+    # Add more years and corresponding inflation rates here
+}
+
+initial_sum = 1000
+initial_year = 2010
+final_year = 2022
+
+adjusted_values = calculate_inflation(initial_sum, initial_year, final_year, inflation_data)
+
+print(adjusted_values)
+
