@@ -479,8 +479,50 @@ zero_coupon_bonds = html.Div([
         html.P("Trái phiếu không lãi suất không trả lãi theo định kỳ."),
         html.P('Thay vào đó, trái phiếu z được phát hành với giá chiết khấu và đáo hạn theo mệnh giá của chúng.'),
         html.P('Kết quả là, tính toán YTM cho trái phiếu không lãi suất khác với trái phiếu truyền thống.')
-        ]),
+        ],style={'background-color':'#c3c3c36e','color':'red'}),
     ])
 
 ])
 
+inflation_bonds = html.Div(
+    children=[
+        html.Div([
+        html.H1("Inflation Calculator"),
+        html.Div(
+            children=[
+                html.Label("Initial Sum:"),
+                dcc.Input(id="initial-sum", type="number", value=1000),
+            ],
+            style={"margin-bottom": "10px"},
+        ),
+        html.Div(
+            children=[
+                html.Label("Initial Year:"),
+                dcc.Input(id="initial-year", type="number", value=2010),
+            ],
+            style={"margin-bottom": "10px"},
+        ),
+        html.Div(
+            children=[
+                html.Label("Final Year:"),
+                dcc.Input(id="final-year", type="number", value=2022),
+            ],
+            style={"margin-bottom": "10px"},
+        ),
+        dcc.Graph(id="inflation-chart"),
+        ]),
+        html.Hr(),
+        html.Div([
+            html.P("Để tính tỷ lệ lạm phát cho một năm nhất định, chỉ số CPI sẽ hữu ích, nhưng nó chỉ tính từ năm 1913. Nếu bạn muốn tìm tỷ lệ lạm phát lịch sử trước đó, các nhà phân tích lấy chỉ số giá hiện tại rồi trừ đi chỉ số giá tương đương dựa trên trên dữ liệu lịch sử cho năm đó."),
+            dbc.Card([
+                html.H1('🌀TIP:'),
+                html.P('(Chỉ số giá năm 2 - Chỉ số giá năm 1) ÷ Chỉ số giá năm 1 x 100 = Tỷ lệ lạm phát năm 1'),
+                html.P('Trong công thức này, chỉ số năm 2 hiện tại là chỉ số giá tiêu dùng ở thời điểm hiện tại và chỉ số năm trước đó là chỉ số giá tiêu dùng ở thời điểm trước đó. Khi áp dụng công thức này, kết quả sẽ cho biết tỷ lệ tăng trưởng của CPI trong một khoảng thời gian cụ thể, thường được biểu thị dưới dạng phần trăm.'),
+                html.P('Lạm phát là sự gia tăng chung và liên tục của mức giá hàng hóa và dịch vụ trong một nền kinh tế. Khi lạm phát xảy ra, giá cả sẽ tăng, và tiền tệ mất giá trị theo thời gian. Điều này có thể xảy ra do nhiều yếu tố, như tăng trưởng kinh tế, chi tiêu chính phủ, biến động nguồn cung và yêu cầu hàng hóa và dịch vụ.'),
+                html.P('Lạm phát có thể có những tác động tiêu cực đến nền kinh tế và người dân. Một mức lạm phát quá cao có thể làm giảm sức mua của người tiêu dùng, giảm độ tin cậy vào tiền tệ và gây ra không ổn định kinh tế. Tuy nhiên, một mức lạm phát ổn định có thể có lợi cho kinh tế bằng cách thúc đẩy đầu tư và tiêu dùng.'),
+
+            ],style={'background-color':'#c3c3c36e','color':'red'})
+        ])
+    ],
+    style={"padding": "20px"},
+)

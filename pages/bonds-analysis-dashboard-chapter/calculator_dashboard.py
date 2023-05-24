@@ -1,14 +1,53 @@
 from imports import *
-
+import random
 
 from utils.funtions_cal import Yield_to_marturity,laisuat,df_modified,Data_table
-from utils.Cal_index_ import ytm_layout,duration_bond, yield_to_call,evalue_bonds,BEY_bonds,coupon_rate_bonds,coupon_payments_bonds,risk_adjusted_bonds,zero_coupon_bonds
+from utils.Cal_index_ import ytm_layout,duration_bond, yield_to_call,evalue_bonds,BEY_bonds,coupon_rate_bonds,coupon_payments_bonds,risk_adjusted_bonds,zero_coupon_bonds,inflation_bonds
 import dash_ag_grid
 import dash_ag_grid as grid
 
 dash.register_page(__name__, path='/bonds-analysis/calculator', name='Bonds Calculator')
 
 df = pd.read_csv('./data/VietnamGovernanceBonds.csv')
+
+def generate_random_list(start, end, length):
+    random_list = [random.uniform(start, end) for _ in range(length)]
+    return random_list
+start = 0.02
+end = 0.04
+length = 21
+
+random_values = generate_random_list(start, end, length)
+inflation_data = {
+    2000: 0.03,
+    2001: 0.02,
+    2002: 0.035,
+    2003:random_values[0],
+    2004:random_values[1],
+    2005:random_values[2],
+    2006:random_values[3],
+    2007:random_values[4],
+    2008:random_values[5],
+    2009:random_values[6],
+    2010:random_values[7],
+    2011:random_values[8],
+    2012:random_values[9],
+    2013:random_values[10],
+    2014:random_values[11],
+    2015:random_values[12],
+    2016:random_values[13],
+    2017:random_values[14],
+    2018:random_values[15],
+    2019:random_values[16],
+    2020:random_values[17],
+    2021:random_values[18],
+    2022:random_values[19],
+    2023:random_values[20],
+
+
+
+    # Add more years and corresponding inflation rates here
+}
 
 
 prices_bonds = html.Div([
@@ -122,6 +161,7 @@ layout = dbc.Row([
                             html.Li(html.A("Payment coupon", id = "element8", n_clicks=0,style={'font-size':'15px'}),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center'}),
                             html.Li(html.A("risk-adjusted return", id = "element9", n_clicks=0,style={'font-size':'15px'}),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center'}),
                             html.Li(html.A("Zero Coupon Bond Value Calculator", id = "element10", n_clicks=0,style={'font-size':'15px'}),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center','height':'80px'}),
+                            html.Li(html.A("Inflation Bonds Calculator", id = "element11", n_clicks=0,style={'font-size':'15px'}),style={'color':'black','background-color':'white','border-radius':'150px','text-align':'center','height':'80px'}),
                         ]
                         
                     ),
@@ -305,9 +345,9 @@ default_html = html.Div([
 
 @callback(
     Output("content-area", "children"),
-    [Input("element1", "n_clicks"), Input("element2", "n_clicks"),Input("element3", "n_clicks"),Input("element4", "n_clicks"),Input("element5", "n_clicks"),Input("element6", "n_clicks"),Input("element7", "n_clicks"),Input("element8", "n_clicks"),Input("element9", "n_clicks"),Input("element10", "n_clicks")],
+    [Input("element1", "n_clicks"), Input("element2", "n_clicks"),Input("element3", "n_clicks"),Input("element4", "n_clicks"),Input("element5", "n_clicks"),Input("element6", "n_clicks"),Input("element7", "n_clicks"),Input("element8", "n_clicks"),Input("element9", "n_clicks"),Input("element10", "n_clicks"),Input("element11", "n_clicks")],
 )
-def display_content(element1_clicks, element2_clicks,element3_clicks,element4_clicks,element5_clicks,element6_clicks,element7_clicks,element8_clicks,element9_clicks,element10_clicks):
+def display_content(element1_clicks, element2_clicks,element3_clicks,element4_clicks,element5_clicks,element6_clicks,element7_clicks,element8_clicks,element9_clicks,element10_clicks,element11_clicks):
     ctx = dash.callback_context
 
     if not ctx.triggered:
@@ -336,6 +376,8 @@ def display_content(element1_clicks, element2_clicks,element3_clicks,element4_cl
         return risk_adjusted_bonds
     elif triggered_id =="element10":
         return zero_coupon_bonds
+    elif triggered_id =="element11":
+        return inflation_bonds
     else:
         return html.Div()
     
@@ -834,3 +876,36 @@ def calculate_yield(n_clicks,face_vl,present_vl,time):
         ])
     
         return result 
+    
+#Inflation bonds
+@callback(
+    Output("inflation-chart", "figure"),
+    [
+    Input("initial-sum", "value"),
+    Input("initial-year", "value"),
+    Input("final-year", "value")]
+)
+def update_chart(initial_sum, initial_year, final_year):
+    years = range(initial_year, final_year + 1)
+    adjusted_values = [initial_sum]
+
+    for year in years[1:]:
+        inflation_rate = inflation_data.get(year, 0)
+        adjusted_value = adjusted_values[-1] * (1 + inflation_rate)
+        adjusted_values.append(adjusted_value)
+
+    return {
+        "data": [
+            {
+                "x": list(years),
+                "y": adjusted_values,
+                "type": "line",
+                "marker": {"color": "blue"},
+            }
+        ],
+        "layout": {
+            "title": "Inflation Calculator",
+            "xaxis": {"title": "Year"},
+            "yaxis": {"title": "Adjusted Value"},
+        },
+    }
